@@ -15,7 +15,7 @@ class HTMLNode:
         if self.props is None:
             return ""
 
-        html = reduce(lambda s, x: f'{s} "{x[0]}"="{x[1]}"', self.props.items(), "")
+        html = reduce(lambda s, x: f'{s} {x[0]}="{x[1]}"', self.props.items(), "")
         return html
 
     def __repr__(self):

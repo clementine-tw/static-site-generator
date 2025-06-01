@@ -147,7 +147,7 @@ def heading_to_html_node(block):
         raise ValueError(f"invalid heading level: {level}")
 
     children = text_to_children(block[level + 1 :])
-    return ParentNode(f"h<{level}>", children)
+    return ParentNode(f"h{level}", children)
 
 
 def quote_to_html_node(block):
