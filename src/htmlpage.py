@@ -10,7 +10,7 @@ def extract_title(md):
     raise Exception("level 1 header is not found")
 
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath):
     print(f"generating page from {from_path} to {dest_path} using {template_path}")
     with open(from_path) as md_file:
         md_content = md_file.read()
@@ -25,6 +25,8 @@ def generate_page(from_path, template_path, dest_path):
     html = template_content.replace("{{ Title }}", title).replace(
         "{{ Content }}", html_content
     )
+    html = html.replace('href="/', f'href="{basepath}')
+    html = html.replace('src="/', f'src="{basepath}')
 
     dest_dir = os.path.dirname(dest_path)
     os.makedirs(dest_dir, exist_ok=True)
@@ -32,7 +34,7 @@ def generate_page(from_path, template_path, dest_path):
         html_file.write(html)
 
 
-def generate_page_recursive(from_path, template, to_path):
+def generate_page_recursive(from_path, template, to_path, basepath):
     for dir in os.listdir(from_path):
         new_path = os.path.join(from_path, dir)
         if os.path.isfile(new_path):
@@ -44,10 +46,12 @@ def generate_page_recursive(from_path, template, to_path):
                 new_path,
                 template,
                 os.path.join(to_path, dir.replace(".md", ".html")),
+                basepath,
             )
         else:
             generate_page_recursive(
                 new_path,
                 template,
                 os.path.join(to_path, dir),
+                basepath,
             )
